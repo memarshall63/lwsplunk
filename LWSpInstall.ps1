@@ -18,22 +18,23 @@ param (
     [Parameter(Mandatory=$true)][string]$type
 )
 
-if ("full" -eq $type)
+if ("uf" -eq $type)
 {
+    $Config = @{
+        version = "8.1.3"
+        download_file = "splunkforwarder-8.1.3-63079c59e632-x64-release.msi"
+        download_path = "https://download.splunk.com/products/universalforwarder/releases/#VERSION#/windows/#DOWNLOAD_FILE#"
+        installdir = "C:\SplunkForwarder\"
+        splunk_user = "splunkadmin"
+    }
+}
+else {
     $Config = @{
         version = "8.1.3"
         download_file = "splunk-8.1.3-63079c59e632-x64-release.msi"
         download_path = "https://download.splunk.com/products/splunk/releases/#VERSION#/windows/#DOWNLOAD_FILE#"
         installdir = "C:\Splunk\"
-        splunk_user = "splunk"
-    }
-}
-else {
-    $Config = @{
-        download_file = "splunkforwarder-8.1.3-63079c59e632-x64-release.msi"
-        download_path = "https://download.splunk.com/products/universalforwarder/releases/#VERSION#/windows/#DOWNLOAD_FILE#"
-        installdir = "C:\SplunkForwarder\"
-        splunk_user = "splunk"
+        splunk_user = "splunkadmin"
     }
 }    
 
@@ -43,7 +44,8 @@ Write-Information $out_str
 
 $Version = $Config['version']
 
-Write-Output "Downloading...$Config['download_file']"
+Write-Output "Downloading..."
+Write-Output $Config['download_file']
 
 #    wget "https://download.splunk.com/products/splunk/releases/8.1.3/windows/splunk-8.1.3-63079c59e632-x64-release.msi -outfile splunk-8.1.3-63079c59e632-x64-release.msi"  
 $Config['download_path'] = $Config['download_path'].Replace("#VERSION#", $Version)
